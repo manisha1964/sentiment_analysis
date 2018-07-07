@@ -11,15 +11,15 @@ from scipy.sparse import csr_matrix,csc_matrix
 
 def load_fv(s):
     fv=[]
-    inp=open('%s/allfv.csv' % s, 'r')
+    inp=open('%s/allfv.csv' % s, 'rb')
     #, quoting=csv.QUOTE_NONNUMERIC
     y = csv.reader(inp)
+    cnt=1
     for row in y:
-    	row2=[]
-    	for r in row:
-    		row2.append(float(r))
-    	fv.append(row2)
-    csvfile.seek(0)
+    	print cnt
+    	cnt+=1
+    	fv.append(row)
+
     print 'fv', len(fv)
     return fv
 
@@ -68,6 +68,15 @@ print 'load test'
 fvec_test=load_fv("test")
 print 'load train'
 fvec_train=load_fv("train")
+print len(fvec_train)
+fv2=[]
+for row in fvec_train:
+	r2=[]
+	for item in row:
+		r2.append(float(item))
+	fv2.append(r2)
+fvec_train=fv2
+print len(fvec_train)
 print 'loaded train'
 lab_train=load_label("train")
 with open('test/labels.txt', 'rb') as ip:
