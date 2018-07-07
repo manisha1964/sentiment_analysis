@@ -12,9 +12,13 @@ from scipy.sparse import csr_matrix,csc_matrix
 def load_fv(s):
     fv=[]
     inp=open('%s/allfv.csv' % s, 'r')
-    y = csv.reader(inp, quoting=csv.QUOTE_NONNUMERIC)
+    #, quoting=csv.QUOTE_NONNUMERIC
+    y = csv.reader(inp)
     for row in y:
-    	fv.append(row)
+    	row2=[]
+    	for r in row:
+    		row2.append(float(r))
+    	fv.append(row2)
     print 'fv', len(fv)
     return fv
 
