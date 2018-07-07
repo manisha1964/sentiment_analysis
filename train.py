@@ -19,6 +19,7 @@ def load_fv(s):
     	for r in row:
     		row2.append(float(r))
     	fv.append(row2)
+    csvfile.seek(0)
     print 'fv', len(fv)
     return fv
 
