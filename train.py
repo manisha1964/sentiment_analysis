@@ -66,19 +66,19 @@ def count_pred(predicts, y_test_arr):
             
 print 'load test'
 fvec_test=load_fv("test")
-print 'load train'
-fvec_train=load_fv("train")
-print len(fvec_train)
+#print 'load train'
+#fvec_train=load_fv("train")
+#print len(fvec_train)
 fv2=[]
-for row in fvec_train:
+for row in fvec_test:
 	r2=[]
 	for item in row:
 		r2.append(float(item))
 	fv2.append(r2)
-fvec_train=fv2
-print len(fvec_train)
-print 'loaded train'
-lab_train=load_label("train")
+fvec_test=fv2
+#print len(fvec_train), type(fvec_train)
+#print 'loaded train'
+#lab_train=load_label("train")
 with open('test/labels.txt', 'rb') as ip:
 	lab_test=ip.readlines()
 print len(lab_test)
@@ -101,7 +101,7 @@ print X_test_arr.data.nbytes
 sparse.save_npz("test/testmatrix.npz", X_test_arr)
 #X_test_arr = sparse.load_npz("test/testmatrix.npz")
 print 'converted'
-
+'''
 print 'convert train to sparse'
 X_train_arr = csr_matrix(fvec_train)
 print X_train_arr.data.nbytes
@@ -146,6 +146,6 @@ print accuracy_score(predicts, y_test_arr), maxiter
 print recall_score(y_test_arr, predicts, average='macro'), 'macro'
 print recall_score(y_test_arr, predicts, average='micro'), 'micro'
 print recall_score(y_test_arr, predicts, average='weighted'), 'weighted'
-
+'''
 #0.583279062195 1
 #0.575708238359 0.2
