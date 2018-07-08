@@ -70,8 +70,11 @@ fvec_test=load_fv("test")
 #fvec_train=load_fv("train")
 #print len(fvec_train)
 fv2=[]
+cnt=1
 for row in fvec_test:
 	r2=[]
+	print cnt
+	cnt+=1
 	for item in row:
 		r2.append(float(item))
 	fv2.append(r2)
