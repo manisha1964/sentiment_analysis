@@ -8,17 +8,45 @@ from sklearn.metrics import accuracy_score, recall_score, f1_score, precision_sc
 from sklearn.cross_validation import train_test_split
 from scipy import sparse
 from scipy.sparse import csr_matrix,csc_matrix
+import pandas as pd
 
 def load_fv(s):
     fv=[]
-    inp=open('%s/allfv.csv' % s, 'rb')
-    #, quoting=csv.QUOTE_NONNUMERIC
-    y = csv.reader(inp)
+    #inp=open('%s/allfv.csv' % s, 'rb')
     cnt=1
-    for row in y:
-    	print cnt
-    	cnt+=1
-    	fv.append(row)
+    reader=pd.read_csv('%s/allfv.csv' % s, header=None, iterator=True)
+	#print len(chunks)
+    cnt=0
+	
+	#reader=pd.read_csv('%s/allfv.csv' % s, header=None, iterator=True)
+    while(cnt<49987):
+		cnt+=1
+		ch=reader.get_chunk(1)
+		print ch
+		row=[]
+		for item in ch:
+			#print item
+			try:
+				row.append(float(item))
+			except:
+				val=item.split('.')
+				v=[]
+				v.append(val[0])
+				v.append(val[1])
+				v='.'.join(v)
+				v=float(v)
+				#print item, v
+				row.append(v)
+		fv.append(row)
+	
+    print len(fv), len(fv[0])
+    #, quoting=csv.QUOTE_NONNUMERIC
+    # y = csv.reader(inp)
+    # cnt=1
+    # for row in y:
+    # 	print cnt
+    # 	cnt+=1
+    # 	fv.append(row)
 
     print 'fv', len(fv)
     return fv
@@ -64,54 +92,55 @@ def count_pred(predicts, y_test_arr):
             cnt2+=1
     print cnt0, cnt1, cnt2
             
-print 'load test'
-fvec_test=load_fv("test")
-#print 'load train'
-#fvec_train=load_fv("train")
-#print len(fvec_train)
-fv2=[]
-cnt=1
-for row in fvec_test:
-	r2=[]
-	print cnt
-	cnt+=1
-	for item in row:
-		r2.append(float(item))
-	fv2.append(r2)
-fvec_test=fv2
-#print len(fvec_train), type(fvec_train)
-#print 'loaded train'
-#lab_train=load_label("train")
-with open('test/labels.txt', 'rb') as ip:
-	lab_test=ip.readlines()
-print len(lab_test)
-l=[]
-for item in lab_test:
-	item=item.rstrip('\n')
-	#print item
-	if item == 'negative':
-		l.append(-1.0)
-	elif item == 'positive':
-		l.append(1.0)
-	elif item == 'neutral':
-		l.append(0.0)
-lab_test=l
+#print 'load test'
+#fvec_test=load_fv("test")
 
-print type(fvec_test)
-print 'convert test to sparse'
-X_test_arr = csr_matrix(fvec_test)
-print X_test_arr.data.nbytes
-sparse.save_npz("test/testmatrix.npz", X_test_arr)
+print 'load train'
+fvec_train=load_fv("train")
+print len(fvec_train)
+# fv2=[]
+# cnt=1
+# for row in fvec_t:
+# 	r2=[]
+# 	print cnt
+# 	cnt+=1
+# 	for item in row:
+# 		r2.append(float(item))
+# 	fv2.append(r2)
+# fvec_test=fv2
+print len(fvec_train), type(fvec_train)
+print 'loaded train'
+lab_train=load_label("train")
+#with open('test/labels.txt', 'rb') as ip:
+#	lab_test=ip.readlines()
+#print len(lab_test)
+# l=[]
+# for item in lab_test:
+# 	item=item.rstrip('\n')
+# 	#print item
+# 	if item == 'negative':
+# 		l.append(-1.0)
+# 	elif item == 'positive':
+# 		l.append(1.0)
+# 	elif item == 'neutral':
+# 		l.append(0.0)
+# lab_test=l
+
+#print type(fvec_test)
+#print 'convert test to sparse'
+#_test_arr = csr_matrix(fvec_test)
+#print X_test_arr.data.nbytes
+#sparse.save_npz("test/testmatrix.npz", X_test_arr)
 #X_test_arr = sparse.load_npz("test/testmatrix.npz")
-print 'converted'
-'''
+#print 'converted'
+
 print 'convert train to sparse'
 X_train_arr = csr_matrix(fvec_train)
 print X_train_arr.data.nbytes
 sparse.save_npz("train/trainmatrix.npz", X_train_arr)
 #X_train_arr = sparse.load_npz("train/trainmatrix.npz") #load saved sparse matrix
 print 'converted'
-
+'''
 #train_valid_test split
 fvec_train, fvec_tes, lab_train, lab_te = train_test_split(X_train_arr, lab_train, test_size=0.0, random_state=1)
 fvec_test, o, lab_test, o = train_test_split(X_test_arr, lab_test, test_size=0.0, random_state=1)
