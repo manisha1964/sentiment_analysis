@@ -22,13 +22,14 @@ def load_fv(s):
     while(cnt<49987):
 		cnt+=1
 		ch=reader.get_chunk(1)
-		print ch
+		#print ch
 		row=[]
 		for item in ch:
 			#print item
 			try:
 				row.append(float(item))
 			except:
+				print cnt
 				val=item.split('.')
 				v=[]
 				v.append(val[0])
